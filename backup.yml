@@ -1,0 +1,47 @@
+---
+- hosts: all
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: Group hosts by 'switch'
+    group_by:
+      key: switch
+    when: inventory_hostname is search('sw')
+
+  - name: Group hosts by 'leaf'
+    group_by:
+      key: leaf        
+    when: inventory_hostname is search('lf')  
+
+  - name: Group hosts by 'spine'
+    group_by:
+      key: spine       
+    when: inventory_hostname is search('sp')
+
+#  - name: Group hosts by 'router'
+#    group_by:
+#      key: router      
+#    when: inventory_hostname is search('rt')
+
+#- hosts: router
+#  connection: local
+#  roles:
+#    - router
+
+- hosts: spine
+  connection: local
+  roles:
+    - leaf
+
+- hosts: leaf
+  connection: local
+  gather_facts: no
+  roles:
+    - leaf
+
+- hosts: switch
+  connection: local
+  gather_facts: no
+  roles:
+    - switch
