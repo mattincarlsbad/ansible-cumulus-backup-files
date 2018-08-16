@@ -1,0 +1,18 @@
+---   
+- name: create directory for each switch
+  local_action: file path="/var/tmp/ansible-cumulus-backup-files/{{ inventory_hostname }}" state=directory mode=0755
+     
+- name: backup /etc/network/interfaces to /var/tmp/...
+  fetch:
+    src: /etc/network/interfaces
+    dest: /var/tmp/ansible-cumulus-backup-files/
+    
+- name: backup /etc/frr/frr.conf to /var/tmp/...
+  fetch:
+    src: /etc/frr/frr.conf
+    dest: /var/tmp/ansible-cumulus-backup-files/
+
+- name: backup /etc/cumulus/ports.conf to /var/tmp/...
+  fetch:
+    src: /etc/cumulus/ports.conf
+    dest: /var/tmp/ansible-cumulus-backup-files/
